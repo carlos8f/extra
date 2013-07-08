@@ -1,4 +1,6 @@
-module.exports = {
+var spawn = require('child_process').spawn;
+
+var extra = module.exports = {
   cmd: null,
   args: [],
   env: {}
@@ -37,9 +39,12 @@ if (~idx) {
       process.argv.push(argv[i]);
     }
   }
-  module.exports = {
-    cmd: args.shift(),
-    args: args,
-    env: env
+  extra.cmd = args.shift();
+  extra.args = args;
+  extra.env = env;
+  extra.spawn = function (_opts) {
+    _opts || (_opts = {});
+    _opts.env || (_opts.env = extra.env);
+    return spawn(extra.cmd, extra.args, _opts);
   };
 }
