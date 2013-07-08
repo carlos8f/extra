@@ -21,16 +21,13 @@ var extra = require('extra')
   , cmd = require('commander')
   , spawn = require('child_process').spawn
 
-var e = extra();
 cmd.parse(process.argv);
-if (cmd.args[0] === 'spawn') {
-  spawn(e.cmd, e.args, {env: e.env});
-}
+spawn(extra.cmd, extra.args, {env: extra.env});
 ```
 
 ### Example
 
-Use `extra()` to spawn an arbitrary command with user-specified options.
+Use `extra` to spawn an arbitrary command with user-specified options.
 
 ```js
 #!/usr/bin/env node
@@ -38,14 +35,12 @@ var extra = require('extra')
   , program = require('commander')
   , spawn = require('child_process').spawn
 
-var e = extra();
-
 program
   .command('spawn')
   .usage('[options] -- <cmd> [cmd_options] [cmd_args...]')
   .option('--fork', 'fork the process and exit')
   .action(function (cmd) {
-    var proc = spawn(e.cmd, e.args, {env: e.env});
+    var proc = spawn(extra.cmd, extra.args, {env: extra.env});
     if (cmd.fork) {
       process.exit();
     }
@@ -59,6 +54,7 @@ program
 program.parse(process.argv);
 
 if (!program.args.length) program.outputHelp();
+
 ```
 
 - - -

@@ -3,14 +3,12 @@ var extra = require('../')
   , program = require('commander')
   , spawn = require('child_process').spawn
 
-var e = extra();
-
 program
   .command('spawn')
   .usage('[options] -- <cmd> [cmd_options] [cmd_args...]')
   .option('--fork', 'fork the process and exit')
   .action(function (cmd) {
-    var proc = spawn(e.cmd, e.args, {env: e.env});
+    var proc = spawn(extra.cmd, extra.args, {env: extra.env});
     if (cmd.fork) {
       process.exit();
     }
