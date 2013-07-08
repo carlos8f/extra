@@ -1,7 +1,8 @@
 module.exports = function extra () {
   var idx = process.argv.indexOf('--');
   if (~idx) {
-    var args = process.argv.splice(idx + 1);
+    process.argv.splice(idx, 1);
+    var args = process.argv.splice(idx);
     var env = {};
     Object.keys(process.env).forEach(function (k) {
       env[k] = process.env[k];

@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-var extra = require('../../')
+var extra = require('../')
   , program = require('commander')
 
 var e = extra();

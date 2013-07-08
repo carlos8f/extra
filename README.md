@@ -5,6 +5,62 @@ parse extra arguments to a command after &quot;--&quot;
 
 [![build status](https://secure.travis-ci.org/carlos8f/extra.png)](http://travis-ci.org/carlos8f/extra)
 
+Ever want to create a command that spawned another command, and let the user pass
+arguments and environment variables to it?
+
+`extra` modifies `process.argv` and parses out command/arguments/etc passed after
+`--` in the argument list, which enables you to spawn a separate command with the
+result, and still use [commander.js](https://github.com/visionmedia/commander.js/)
+or other "strict" argument checking libraries which would normally complain about
+unknown arguments.
+
+### Usage
+
+```js
+var extra = require('extra')
+  , cmd = require('commander')
+  , spawn = require('child_process').spawn
+
+var e = extra();
+cmd.parse(process.argv);
+if (cmd.args[0] === 'spawn') {
+  spawn(e.cmd, e.args, {env: e.env});
+}
+```
+
+### Example
+
+Use `extra()` to spawn an arbitrary command with user-specified options.
+
+```js
+#!/usr/bin/env node
+var extra = require('extra')
+  , program = require('commander')
+  , spawn = require('child_process').spawn
+
+var e = extra();
+
+program
+  .command('spawn')
+  .usage('[options] -- <cmd> [cmd_options] [cmd_args...]')
+  .option('--fork', 'fork the process and exit')
+  .action(function (cmd) {
+    var proc = spawn(e.cmd, e.args, {env: e.env});
+    if (cmd.fork) {
+      process.exit();
+    }
+    proc.stdout.pipe(process.stdout);
+    proc.stderr.pipe(process.stderr);
+    process.on('exit', function () {
+      proc.kill();
+    });
+  })
+
+program.parse(process.argv);
+
+if (!program.args.length) program.outputHelp();
+```
+
 - - -
 
 ### Developed by [Terra Eclipse](http://www.terraeclipse.com)

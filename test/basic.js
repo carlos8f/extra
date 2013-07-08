@@ -1,6 +1,6 @@
 describe('basic test', function () {
   it('works', function (done) {
-    exec('./test/fixtures/test --something --lol=true --env.NAME=val --env.IAM=GOZER arg1 arg2 -- HEY=yo LOS=zafiros amino deploy --after=yes', function (err, stdout, stderr) {
+    exec('node example/basic.js --something --lol=true --env.NAME=val --env.IAM=GOZER arg1 arg2 -- HEY=yo LOS=zafiros amino deploy --after=yes', function (err, stdout, stderr) {
       assert.ifError(err);
       var output = JSON.parse(stdout);
       assert(output);
